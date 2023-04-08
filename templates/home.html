@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static%}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Employee Vacation</title>
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
+    <link href="{% static 'https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i'%}"rel="stylesheet">
+    <link href="{%static 'css/sb-admin-2.min.css'%}" rel="stylesheet">
+    <link rel="stylesheet" href="{%static 'datatable/jquery.dataTables.min.css'%}"/>
+    <script src="{% static 'vendor/jquery/jquery.min.js'%}"></script>
+    <script src="{% static 'datatable/jquery.dataTables.min.js' %}"></script>
+    <link href="{%static 'css/sb-admin-2.min.css'%}" rel="stylesheet">
+    <style>.hide{display:none!important;}</style>
+    <script src="{% static 'js/dtp.js' %}"></script>
+    <!-- Bootstrap CSS -->
+   <link rel="stylesheet" href="{%static 'css/bootstrap-datetimepicker.min.css'%}"> 
+</head>
+<body id="page-top">
+<div id="wrapper">
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+                {% include 'topbar.html'%}
+            <div class="container-fluid">
+                <div class="row-not">
+                        <!--Admin summary of all vacation-->
+                        {% if request.user.is_superuser %}
+                                {% include 'summary.html'%}
+                        {% endif %}
+                    <div class="row">
+                        <div class="col-xl-12 col-lg-7 ">
+                            <div class="card shadow mb-4">
+                                <div
+                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+
+                                    {%if request.user.is_superuser%}
+                                    <h6 class="m-0 font-weight-bold text-primary row">Those are Employee's Vacation Requests</h6>
+                                    {%else%}
+                                    <h6 class="m-0 font-weight-bold text-primary row">Those are {{request.user.username}}'s Vacation</h6>
+                                   {%endif%}
+                                    <div class="dropdown no-arrow">
+                                        {%if request.user.is_superuser%}
+                                        {%else%}
+                                            <a href="{%url 'add-vacation'%}">
+                                                <i id ="add-vacation"class="fas fa-plus fa-sm fa-fw text-gray-400"></i>
+                                            </a>
+                                        {%endif%}
+                                            {% if request.resolver_match.url_name == "add-vacation" %}
+                                                    <a href="{%url 'vacation-user'%}">
+                                                        <i class="fas fa-arrow-right fa-fw text-gray-400"></i>
+                                                    </a>
+                                            {% endif %} 
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                    {% block content %}
+                                    {% endblock content%}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+       
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script> 
+     <script src="{%static 'vendor/jquery-easing/jquery.easing.min.js'%}"></script>
+    <script src="{%static 'js/sb-admin-2.min.js'%}"></script>
+   
+          <script>
+            $(function () {
+                $.extend(true, $.fn.datetimepicker.defaults, {
+                    icons: {
+                        time: 'far fa-clock',
+                        date: 'far fa-calendar',
+                        up: 'fas fa-arrow-up',
+                        down: 'fas fa-arrow-down',
+                        previous: 'fas fa-chevron-left',
+                        next: 'fas fa-chevron-right',
+                        today: 'far fa-calendar-check-o',
+                        clear: 'far fa-trash',
+                        close: 'far fa-times'
+                    }
+                });
+            });
+            </script>
+<script type="text/javascript">
+/* datatables global function to load data from server */
+function create_datatable(table_id, url, columns){
+$('#'+table_id).DataTable({
+"processing": true,
+"dataSrc": "data",
+"ajax": {
+"url": url,
+"dataType": "json",
+},
+"columns": columns
+});
+}
+// i use buttons instead of using select to change the vacation status in the admin view
+// function create_select(target_id, current_value, class_name){
+// // create select from global statues variable
+// var select_html_code = '<select class="'+class_name+'" data-id="'+target_id+'">';
+//     {% for val,res in statuses%}
+//     select_html_code += '<option value="{{val}}">{{res}}</option>'
+//     {% endfor %}
+// select_html_code += '</select>';
+// // select current value before return
+// return select_html_code;
+// }
+ {% if request.user.is_superuser %}
+/********************************* for admin */
+create_datatable('vacation_table', "/api/vacation-list/?format=json", [
+{"data": "owner"},
+{"data": "type_vacation"},
+{"data": "date_vacation",render:function(data){
+    return moment(data).format("YYYY-MM-DD");
+
+}},
+{"data": "start_date",render:function(data){
+    return moment(data).format("YYYY-MM-DD");}},
+{"data": "end_date",render:function(data){
+    return moment(data).format("YYYY-MM-DD");}},
+{"data": "comments"},
+{"data":"status",render:function(data,type,full){
+    var is_approved=(full.status=='Approved')
+    var is_Pending=(full.status=='Pending')
+    var is_denied=(full.status=='Denied')
+    if (is_approved)
+        return '<span class="btn btn btn-success far fa-thumbs-up fa-2x text-300" title="Approved" "></span>';
+    else if (is_Pending)
+        return '<span class="btn btn btn-primary far fa-hand-point-up text-300" title="Pending" "></span>';
+    return '<span class="btn btn btn-danger far fa-thumbs-down  fa-2x text-300" title="Denied" "></span>';
+}},
+{"data" : "command",render: function(data, type, full) {
+    var approve_link = "{%url 'approve-vacation' id=123456 %}".replace('123456', full.id);
+    var deny_link = "{%url 'deny-vacation' id=123456 %}".replace('123456', full.id);
+    
+    var is_disabled = (full.status == 'Approved' || full.status == 'Denied');
+
+    is_disabled ? approve_link = '#!' : '';
+    is_disabled ? deny_link = '#!' : '';
+
+    return '<a class="btn btn btn-'+(is_disabled ? 'secondary disabled' : 'danger')+' fa fa-thumbs-down"\
+   title="Deny" href="' + deny_link + '"></a>&nbsp;'
+         +'<a class="btn btn-'+(is_disabled ? 'secondary disabled' : 'success')+' fa fa-thumbs-up"\
+         title="Approve" href="' + approve_link + '"></a>';
+}}
+
+
+]);
+{%else%}
+/********************************* for employee edit here */ 
+create_datatable('vacation_table', "/api/vacation-user-api/?format=json", [
+{"data": "type_vacation"},
+{"data": "date_vacation",render:function(data){
+    return moment(data).format("YYYY-MM-DD");}},
+{"data": "start_date",render:function(data){
+    return moment(data).format("YYYY-MM-DD");}},
+{"data": "end_date",render:function(data){
+    return moment(data).format("YYYY-MM-DD");}},
+{"data": "comments"},
+{"data" : "status",render:function(data,type,full){
+    var is_approved=(full.status=='Approved')
+    var is_Pending=(full.status=='Pending')
+    var is_denied=(full.status=='Denied')
+    if (is_approved)
+        return '<span class="btn btn btn-success far fa-thumbs-up fa-2x text-300" title="Approved" "></span>';
+    else if (is_Pending)
+        return '<span class="btn btn btn-primary far fa-hand-point-up text-300" title="Pending" "></span>';
+    return '<span class="btn btn btn-danger far fa-thumbs-down  fa-2x text-300" title="Denied" "></span>';
+}},
+{"data" : "command",render: function(data, type, full) {
+
+var todayDate =  '{% now "Y-m-d" %}'; // from tempalte
+var recordDate = new Date(full.end_date); // full.end_time
+recordDate = moment(recordDate).format("YYYY-MM-DD");
+var isOldDate = (!moment(recordDate).isAfter(todayDate) || (recordDate == todayDate));
+// console.log(todayDate);
+// console.log(recordDate);
+// console.log(isOldDate);
+var is_disabled = (full.status == 'Approved' || full.status == 'Denied');
+
+if(isOldDate || is_disabled ){
+return '';
+}
+else{
+var delete_link = "{%url 'delete-vacation' id=123456 %}".replace('123456', full.id);
+var edit_link = "{%url 'edit-vacation' id=123456 %}".replace('123456', full.id);
+return '<a title="Edit" class="btn btn-primary far fa-edit"  href="'+edit_link+'"></a>&nbsp;'
++'<a   title="Delete" class="btn btn-danger far fa-trash-alt" href="'+delete_link+'"></a>';
+}
+
+
+}
+}
+]);
+
+{% endif %}
+
+
+
+
+/* init event for select on change status send the new value to the server with the vacation id */
+$(document).on('change', '.vacation_status', function(event){
+event.stopPropagation();
+var vacation_id = $(this).data('id'); 
+var new_status = $(this).val(); 
+simple_post_request('/api/update-vacation/', {
+'vacation_id': vacation_id,
+'status': new_status,
+}, function(result){//on_update
+
+});
+});
+
+function simple_post_request(url, obj, callback){
+$.post(url, obj, function(res){
+callback(res);
+});
+}    
+            </script>
+    </body>  
+
+</html>

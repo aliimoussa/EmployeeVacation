@@ -1,0 +1,61 @@
+{% load static %}
+
+<div class="row">
+<div class="col-xl-4 col-md-6 mb-4">
+    <div class="card border-left-primary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                        Pending Requests</div>
+                    <div class="h5 mb-0 font-weight-bold text-800"style="color: #4e73df!important">{{pending}}</div>
+                </div>
+                <div class="col-auto">
+                    <i class="far fa-hand-point-up text-400" style="font-size:36px; color: #4e73df!important"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Earnings (Monthly) Card Example -->
+<div class="col-xl-4 col-md-6 mb-4">
+    <div class="card border-left-success shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1" style="color:#1cc88a!important">
+                        Approved Requests</div>
+                    <div class="h5 mb-0 font-weight-bold text-800" style="color:#1cc88a!important">{{approved}}</div>
+                </div>
+                <div class="col-auto">
+                    <i class="far fa-thumbs-up fa-2x text-300" style="color:#1cc88a!important"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Earnings (Monthly) Card Example -->
+<div class="col-xl-4 col-md-6 mb-4">
+    <div class="card border-left-info shadow h-100 py-2" >
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1" style="color:#ff0326!important">
+                        Denied Requests
+                    </div>
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                            <div class="h5 mb-0 mr-3 font-weight-bold text-800" style="color:#ff0326!important">{{denied}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-auto">
+                     <i class="far fa-thumbs-down  fa-2x text-300"style="color:#ff0326!important"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>

@@ -1,0 +1,61 @@
+{% extends 'home.html'%}
+{% block content %}
+                {% if vacations %}
+                <div class="card-body">
+                    <div class="chart-area">
+                        <div>
+                            <div>
+                                <div>
+                                
+                                    <table class="table table-striped" id="vacation_table">
+                                    
+                                        <thead >
+                                        <tr>
+                                        {% if request.user.is_superuser%}
+                                        
+                                        <th>Employe</th>
+                                        <th>Type</th>
+                                        <th>Vacation Date</th>
+                                        <th>Vacation On</th>
+                                        <th>Vaccation Off</th>
+                                        <th>Comments</th>
+                                        <th>Status</th>
+                                        <th>Command</th>
+
+                                        {% else %}
+
+                                        <th>Type</th>
+                                        <th>Vacation Date</th>
+                                        <th>Vacation on</th>
+                                        <th>Vaccation off</th>
+                                        <th>Comments</th>
+                                        <th>Status</th>
+                                        <th>Command</th>
+
+                                        {%endif%}
+                                        </tr>
+                                        </thead>
+                                        
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                          
+                    </div>
+                </div>
+                {%else%}
+                <div class="container">
+                    {% if request.user.is_superuser%}
+                    <div>
+                        <span class="center"> No vacation request available till now </span>
+                    </div>
+                    {%else%}
+                    <div>
+                        <span class="center"> You have no vacation till now . create one <a href="{%url 'add-vacation'%}">Here</a></span>
+                    </div>
+                    {%endif%}
+                </div>
+                {% endif %}
+                
+
+{% endblock content %}
