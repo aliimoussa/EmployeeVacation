@@ -1,3 +1,5 @@
 .venv/
 instance/
 __pycache__/
+
+>git remote add origin https://github.com/aliimoussa/Patients.git
